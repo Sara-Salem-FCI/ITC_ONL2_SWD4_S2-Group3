@@ -1,12 +1,3 @@
 <resources>
     <string name="app_name">Fitness App</string>
-    <string name="continue_">Continue</string>
-
-<!--  For physical activity level page  -->
-    <string name="physical_activity_level">Physical Activity Level?</string>
-
-    <string name="beginner">Beginner</string>
-    <string name="intermediate">Intermediate</string>
-    <string name="advanced">Advanced</string>
-
 </resources>
