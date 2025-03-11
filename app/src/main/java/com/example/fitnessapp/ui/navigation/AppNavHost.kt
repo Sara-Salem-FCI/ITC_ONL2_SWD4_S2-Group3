@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.fitnessapp.ui.screens.dashboared.ProfileScreen
 import com.example.fitnessapp.ui.screens.food_screen.FoodScreen
 import com.example.fitnessapp.ui.screens.gender_screen.GenderScreen
 import com.example.fitnessapp.ui.screens.height_select.NumberPickerDemo
@@ -22,15 +23,18 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
 
     LaunchedEffect(currentUser) {
         if (currentUser != null) {
-            navController.navigate(Screens.FoodScreen.route) {
+            navController.navigate(Screens.DashBoardScreen.route) {
                 popUpTo(Screens.SplashScreen.route) { inclusive = true }
             }
+        } else {
+            navController.navigate(Screens.LogInScreen.route)
         }
     }
 
+
     NavHost(
         navController = navController,
-        startDestination = if (currentUser != null) Screens.FoodScreen.route else Screens.SplashScreen.route,
+        startDestination = if (currentUser != null) Screens.DashBoardScreen.route else Screens.SplashScreen.route,
         modifier = modifier
     ) {
         composable(Screens.SplashScreen.route) {
@@ -39,6 +43,19 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                     popUpTo(Screens.SplashScreen.route) { inclusive = true }
                 }
             }
+        }
+
+        composable(Screens.LogInScreen.route) {
+            LoginScreen(
+                onLogin = {
+                    navController.navigate(Screens.DashBoardScreen.route) {
+                        popUpTo(0)
+                    }
+                },
+                goToSignUp = {
+                    navController.navigate(Screens.SignUpScreen.route)
+                }
+            )
         }
 
         composable(Screens.SignUpScreen.route) {
@@ -53,6 +70,13 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                         popUpTo(Screens.SignUpScreen.route)
                     }
                 }
+            )
+        }
+
+
+        composable(Screens.DashBoardScreen.route) {
+            ProfileScreen(
+                navController
             )
         }
 
@@ -78,18 +102,7 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
             FoodScreen()
         }
 
-        composable(Screens.LogInScreen.route) {
-            LoginScreen(
-                onLogin = {
-                    navController.navigate(Screens.FoodScreen.route) {
-                        popUpTo(0)
-                    }
-                },
-                goToSignUp = {
-                    navController.navigate(Screens.SignUpScreen.route)
-                }
-            )
-        }
+
 
         composable(Screens.HeightScreen.route) {
             NumberPickerDemo(

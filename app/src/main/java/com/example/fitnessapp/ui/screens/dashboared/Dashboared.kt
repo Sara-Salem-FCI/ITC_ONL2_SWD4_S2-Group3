@@ -2,16 +2,10 @@ package com.example.fitnessapp.ui.screens.dashboared
 
 
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +14,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -33,166 +26,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.R
-
-@Composable
-fun CircularProgressIndicator(
-    progress: Float,
-    remainingText: String,
-    modifier: Modifier = Modifier,
-    strokeWidth: Float = 12f,
-    color: Color = Color(android.graphics.Color.parseColor("#29E33C"))
-) {
-    Box(contentAlignment = Alignment.Center, modifier = modifier) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val diameter = size.minDimension
-            val radius = diameter / 2
-            val angle = 360 * progress
-
-            drawArc(
-                color = Color.LightGray,
-                startAngle = 0f,
-                sweepAngle = 360f,
-                useCenter = false,
-                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-            )
-
-            drawArc(
-                color = color,
-                startAngle = -90f,
-                sweepAngle = angle,
-                useCenter = false,
-                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-            )
-        }
-
-        Text(
-            text = remainingText,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}
+import com.example.fitnessapp.ui.screens.dashboared.components.CircularProgressIndicator
+import com.example.fitnessapp.ui.screens.dashboared.components.DiscoverSection
 
 
 @Composable
-fun DiscoverButton(
-    icon: Painter,
-    label: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    iconColor: Color = Color(android.graphics.Color.parseColor("#29E33C")) // Add iconColor parameter
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier
-            .size(110.dp)
-            .clickable(onClick = onClick)
-            .padding(8.dp)
-            .background(Color.White, shape = RoundedCornerShape(8.dp))
-            .border(1.dp, Color.LightGray, shape = RoundedCornerShape(8.dp))
-    ) {
-        Image(
-            painter = icon,
-            contentDescription = label,
-            colorFilter = ColorFilter.tint(iconColor), // Apply the color tint
-            modifier = Modifier.size(40.dp)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = label,
-            color = Color.Black,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-fun DiscoverSection() {
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text(
-            text = "Discover",
-            style = MaterialTheme.typography.headlineMedium,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            DiscoverButton(
-                icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Sleep",
-                onClick = { /* Handle click */ }
-            )
-            DiscoverButton(
-                icon = painterResource(id = R.drawable.dinner_icon),
-                label = "Recipes",
-                onClick = { /* Handle click */ }
-            )
-            DiscoverButton(
-                icon = painterResource(id = R.drawable.baseline_fitness_center_24),
-                label = "Workouts",
-                onClick = { /* Handle click */ }
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            DiscoverButton(
-                icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Sync up",
-                onClick = { /* Handle click */ }
-            )
-            DiscoverButton(
-                icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Friends",
-                onClick = { /* Handle click */ }
-            )
-            DiscoverButton(
-                icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Community",
-                onClick = { /* Handle click */ }
-            )
-        }
-    }
-}
-
-
-
-
-
-
-@Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavController) {
     Column(
         modifier = Modifier
-            .background(Color.Black)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {
@@ -411,15 +264,12 @@ fun ProfileScreen() {
 
         }
 
-        DiscoverSection()
+        DiscoverSection(navController)
     }
-
-
-
 }
 
 @Composable
 @Preview
 fun PreviewAll() {
-    ProfileScreen()
+    ProfileScreen(navController = rememberNavController())
 }
