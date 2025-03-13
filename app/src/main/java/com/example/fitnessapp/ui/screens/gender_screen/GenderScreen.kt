@@ -2,28 +2,17 @@ package com.example.fitnessapp.ui.screens.gender_screen
 
 
 import androidx.compose.material3.Icon
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,22 +23,20 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
-import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.components.DefaultButton
-import com.example.fitnessapp.ui.components.TopBarWithLogo
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GenderScreen(onGender: (String) -> Unit) {
 
@@ -58,14 +45,10 @@ fun GenderScreen(onGender: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(bottom = 100.dp)
             .background(MaterialTheme.colorScheme.background),
-
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        TopBarWithLogo()
 
         Text(
             text = "What's your gender?",
@@ -73,11 +56,13 @@ fun GenderScreen(onGender: (String) -> Unit) {
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
-                .padding(bottom = 16.dp, top = 20.dp)
-                .weight(1f)
         )
 
-        Column(modifier = Modifier.weight(4f)) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.mars_solid),
                 contentDescription = "Male",
@@ -85,7 +70,9 @@ fun GenderScreen(onGender: (String) -> Unit) {
                 modifier = Modifier
                     .size(200.dp)
                     .clip(RoundedCornerShape(20.dp))
-                    .clickable {}
+                    .clickable {
+
+                    }
                     .pointerInteropFilter { motionEvent ->
                         when (motionEvent.action) {
                             android.view.MotionEvent.ACTION_HOVER_ENTER -> {
@@ -139,26 +126,6 @@ fun GenderScreen(onGender: (String) -> Unit) {
         }
         Spacer(modifier = Modifier.height(32.dp))
 
-//        OutlinedButton(modifier = Modifier
-//            .clickable {}
-//            .border(
-//                BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
-//                RoundedCornerShape(20.dp)
-//            ),
-//            colors = ButtonDefaults.buttonColors(
-//                containerColor = MaterialTheme.colorScheme.background,
-//                contentColor = MaterialTheme.colorScheme.onSurface
-//            ),
-//            onClick = {
-//                onGender("")
-//            }
-//        ) {
-//            Text(
-//                text = "Continue", color = MaterialTheme.colorScheme.onBackground,
-//                style = MaterialTheme.typography.displaySmall
-//            )
-//        }
-
         DefaultButton(onClick = { onGender("") })
     }
 }
@@ -167,13 +134,7 @@ fun GenderScreen(onGender: (String) -> Unit) {
 @Composable
 private fun Prev() {
     FitnessAppTheme {
-        GenderScreen({})
-    }
-    Button(onClick = {},
-        modifier = Modifier
-        .fillMaxWidth()
-        .height(56.dp)) {
-        Text(text = "Continue", fontSize = 18.sp)
+        GenderScreen{}
     }
 
 }

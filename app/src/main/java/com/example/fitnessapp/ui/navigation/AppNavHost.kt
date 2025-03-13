@@ -83,8 +83,8 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
         composable(Screens.LevelScreen.route) {
             PhysicalActivityLevel(
                 onPersonLevel = { personLevel ->
-                    navController.navigate(Screens.FoodScreen.route) {
-                        popUpTo(Screens.LevelScreen.route) {
+                    navController.navigate(Screens.DashBoardScreen.route) {
+                        popUpTo(0) {
                             inclusive = true
                         }
                     }

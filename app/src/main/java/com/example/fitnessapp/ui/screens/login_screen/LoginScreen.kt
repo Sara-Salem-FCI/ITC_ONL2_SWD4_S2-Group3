@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.ui.components.DefaultButton
-import com.example.fitnessapp.ui.components.TopBarWithLogo
 import com.example.fitnessapp.ui.screens.signup_screen.components.CustomOutlinedTextField
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import com.google.firebase.auth.FirebaseAuth
@@ -35,9 +34,6 @@ fun LoginScreen(
     val context = LocalContext.current
 
     Column {
-        // Logo and App Name at the top-left
-        TopBarWithLogo()
-
         // Login Form at the center
         Column(
             modifier = Modifier

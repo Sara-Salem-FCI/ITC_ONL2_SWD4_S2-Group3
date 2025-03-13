@@ -2,26 +2,20 @@ package com.example.fitnessapp.ui.screens.level_screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.fitnessapp.ui.screens.level_screen.components.Content
+import com.example.fitnessapp.ui.screens.level_screen.components.LevelContent
 import com.example.fitnessapp.ui.screens.level_screen.models.LevelList
-import com.example.fitnessapp.ui.components.TopBarWithLogo
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
-fun PhysicalActivityLevel(onPersonLevel : (String) -> Unit) {
+fun PhysicalActivityLevel(onPersonLevel: (String) -> Unit) {
 
     val levelList by remember {
         mutableStateOf(
@@ -42,20 +36,8 @@ fun PhysicalActivityLevel(onPersonLevel : (String) -> Unit) {
         )
     }
 
+    LevelContent(onPersonLevel, levelList)
 
-    Scaffold(
-        modifier = Modifier
-            .background(colorScheme.background)
-            .fillMaxSize(),
-        topBar = {
-            TopBarWithLogo()
-        },
-
-        content = {
-            Content(onPersonLevel,levelList,it)
-        }
-
-    )
 
 }
 
@@ -68,6 +50,6 @@ fun PhysicalActivityLevel(onPersonLevel : (String) -> Unit) {
 @Composable
 fun Prev() {
     FitnessAppTheme {
-        PhysicalActivityLevel(onPersonLevel ={ _ -> })
+        PhysicalActivityLevel(onPersonLevel = { _ -> })
     }
 }

@@ -8,13 +8,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.ui.components.DefaultButton
-import com.example.fitnessapp.ui.components.TopBarWithLogo
 import com.example.fitnessapp.ui.screens.signup_screen.components.CustomOutlinedTextField
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import com.google.firebase.auth.FirebaseAuth
@@ -24,7 +22,6 @@ val auth: FirebaseAuth = FirebaseAuth.getInstance()
 @Composable
 fun SignUpScreen(
     onSignUp: (String, String, String) -> Unit,
-    logIn: () -> Unit = {},
     goToLogin: () -> Unit = {}
 ) {
     var username by remember { mutableStateOf("") }
@@ -39,7 +36,6 @@ fun SignUpScreen(
     val context = LocalContext.current
 
     Column {
-        TopBarWithLogo()
 
         Column(
             modifier = Modifier

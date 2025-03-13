@@ -1,6 +1,5 @@
 package com.example.fitnessapp.ui.screens.height_select
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -33,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.components.DefaultButton
-import com.example.fitnessapp.ui.components.TopBarWithLogo
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -45,12 +43,11 @@ class PickerState {
     var selectedItem by mutableStateOf("")
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Picker(
+    modifier: Modifier = Modifier,
     items: List<String>,
     state: PickerState = rememberPickerState(),
-    modifier: Modifier = Modifier,
     startIndex: Int = 0,
     visibleItemsCount: Int = 3,
     textModifier: Modifier = Modifier,
@@ -66,7 +63,7 @@ fun Picker(
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = listStartIndex)
     val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
     val itemHeightPixels = remember { mutableIntStateOf(0) }
-    val itemHeightDp = pixelsToDp(itemHeightPixels.value)
+    val itemHeightDp = pixelsToDp(itemHeightPixels.intValue)
     val fadingEdgeGradient = remember {
         Brush.verticalGradient(
             0f to Color.Transparent,
@@ -110,7 +107,7 @@ fun Picker(
                         },
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier
-                            .onSizeChanged { size -> itemHeightPixels.value = size.height }
+                            .onSizeChanged { size -> itemHeightPixels.intValue = size.height }
                             .then(textModifier)
                     )
                 }
@@ -153,11 +150,8 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
-            .padding(bottom = 16.dp)
     ) {
 
-        // top bar
-        TopBarWithLogo()
 
         val values = remember { (140..210).map { it.toString() } }
         val valuesPickerState = rememberPickerState()
@@ -198,39 +192,19 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
             state = valuesPickerState,
             items = values,
             visibleItemsCount = 5,
-            modifier = Modifier.fillMaxWidth(0.5f),
+            modifier = Modifier.fillMaxWidth(0.5f)
+                .weight(1f),
             textModifier = Modifier.padding(10.dp),
             textStyle = TextStyle(fontSize = 32.sp, color = Color(0xFFFFFFFF)),
         )
 
-        // Add Spacing Between Picker and Button
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Continue Button
-
-//        Button(
-//            onClick = {
-//                onHeight()
-//                println("Selected Height: ${valuesPickerState.selectedItem} Cm")
-//            },
-//            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2B2D30)),
-//            modifier = Modifier
-//                .fillMaxWidth(0.5f),
-//        ) {
-//            Text(
-//                text = "Continue",
-//                style = MaterialTheme.typography.displaySmall,
-//                color = MaterialTheme.colorScheme.onBackground,
-//                fontWeight = FontWeight.Bold,
-//            )
-//        }
-
-        DefaultButton(onClick = {
-            onHeight()
-            println("Selected Height: ${valuesPickerState.selectedItem} Cm")
-        },
-        color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
-            )
+        DefaultButton(
+            onClick = {
+                onHeight()
+                println("Selected Height: ${valuesPickerState.selectedItem} Cm")
+            },
+            color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
+        )
 
     }
 }

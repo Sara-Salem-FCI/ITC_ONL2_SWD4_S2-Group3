@@ -7,10 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,8 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,34 +26,34 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.fitnessapp.ui.screens.level_screen.models.LevelList
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.components.DefaultButton
+import com.example.fitnessapp.ui.screens.level_screen.models.LevelList
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 
 @Composable
-fun Content(onPersonLevel: (String) -> Unit, levelList: MutableList<LevelList>, it: PaddingValues = PaddingValues(10.dp)) {
+fun LevelContent(
+    onPersonLevel: (String) -> Unit,
+    levelList: MutableList<LevelList>,
+) {
 
     var personLevel = ""
-    val isLevelSelected = remember { mutableStateOf(false) }
+    val isLevelSelected = remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
-            .padding(it),
+        modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(id = R.string.physical_activity_level),
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = colorScheme.onBackground,
             modifier = Modifier.padding(bottom = 10.dp)
         )
 
@@ -66,8 +61,8 @@ fun Content(onPersonLevel: (String) -> Unit, levelList: MutableList<LevelList>, 
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.5f),
-            verticalArrangement = Arrangement.SpaceAround,
+                .weight(1f),
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -96,24 +91,18 @@ fun Content(onPersonLevel: (String) -> Unit, levelList: MutableList<LevelList>, 
             }
         }
 
-        Spacer(modifier = Modifier.fillMaxHeight(0.5f))
-
-
         Column {
-
-            DefaultButton(onClick = {
-                if (personLevel.isEmpty()) {
-                    isLevelSelected.value = true
-                } else {
-                    onPersonLevel(personLevel)
-                }
-            })
-
-            if (isLevelSelected.value)
-                IfNoLevelSelected()
+            DefaultButton(
+                onClick = {
+                    if (personLevel.isEmpty()) {
+                        isLevelSelected.value = "Please select your level"
+                    } else {
+                        onPersonLevel(personLevel)
+                    }
+                },
+                message = isLevelSelected.value
+            )
         }
-
-
     }
 }
 
@@ -157,7 +146,6 @@ fun CardElement(
         border = border,
         shape = CircleShape,
 
-
         ) {
         Box(
             modifier = Modifier
@@ -173,22 +161,12 @@ fun CardElement(
     }
 }
 
-@Composable
-fun IfNoLevelSelected(modifier: Modifier = Modifier) {
-    Text(
-        text = "Please select your level",
-        color = Color.Red,
-        fontSize = 12.sp,
-        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-    )
-}
-
-@Preview()
+@Preview
 @Composable
 private fun Prev() {
     FitnessAppTheme {
-        Content(
-            onPersonLevel ={ _ -> },
+        LevelContent(
+            onPersonLevel = { _ -> },
             levelList = mutableListOf(
                 LevelList(
                     levelName = "Beginner",
