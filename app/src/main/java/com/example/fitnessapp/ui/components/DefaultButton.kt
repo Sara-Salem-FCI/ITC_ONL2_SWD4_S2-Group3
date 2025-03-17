@@ -19,11 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Preview()
+@Preview
 @Composable
 fun DefaultButton(
     onClick: () -> Unit = {},
     text: String = "Continue",
+    enabled: Boolean = true,
     color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.surface),
     message: String = "",
     modifier: Modifier = Modifier.padding(bottom = 32.dp),
@@ -39,7 +40,8 @@ fun DefaultButton(
             colors = color,
             onClick = {
                 onClick()
-            }
+            },
+            enabled = enabled,
         ) {
             Text(
                 text = text,

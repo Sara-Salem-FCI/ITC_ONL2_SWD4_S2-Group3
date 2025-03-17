@@ -1,5 +1,7 @@
 package com.example.fitnessapp.ui.navigation
 
+import GenderScreen
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -8,12 +10,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.ui.screens.dashboared.ProfileScreen
 import com.example.fitnessapp.ui.screens.food_screen.FoodScreen
-import com.example.fitnessapp.ui.screens.gender_screen.GenderScreen
 import com.example.fitnessapp.ui.screens.height_select.NumberPickerDemo
 import com.example.fitnessapp.ui.screens.level_screen.PhysicalActivityLevel
 import com.example.fitnessapp.ui.screens.login_screen.LoginScreen
 import com.example.fitnessapp.ui.screens.signup_screen.SignUpScreen
 import com.example.fitnessapp.ui.screens.splash_screen.SplashScreen
+import com.example.fitnessapp.ui.screens.weight.WeightScreen
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -73,7 +75,6 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
             )
         }
 
-
         composable(Screens.DashBoardScreen.route) {
             ProfileScreen(
                 navController
@@ -83,11 +84,7 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
         composable(Screens.LevelScreen.route) {
             PhysicalActivityLevel(
                 onPersonLevel = { personLevel ->
-                    navController.navigate(Screens.DashBoardScreen.route) {
-                        popUpTo(0) {
-                            inclusive = true
-                        }
-                    }
+                    navController.navigate(Screens.WeightScreen.route)
                 }
             )
         }
@@ -96,6 +93,18 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
             GenderScreen { gender ->
                 navController.navigate(Screens.HeightScreen.route)
             }
+        }
+
+        composable(Screens.WeightScreen.route) {
+            WeightScreen(
+                onWeight = {
+                    navController.navigate(Screens.DashBoardScreen.route) {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
 
         composable(Screens.FoodScreen.route) {

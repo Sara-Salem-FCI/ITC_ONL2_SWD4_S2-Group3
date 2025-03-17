@@ -1,14 +1,10 @@
 package com.example.fitnessapp.ui.screens.weight
 
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -20,38 +16,67 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.fitnessapp.ui.components.DefaultButton
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import kotlin.math.cos
 import kotlin.math.sin
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            FitnessApp()
-        }
-    }
-}
 
 @Composable
-fun FitnessApp() {
+fun WeightScreen(
+    onWeight: () -> Unit = {}
+) {
     var weight by remember { mutableStateOf(56f) } // Initial weight
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
-            .background(Color.Black)
-
     ) {
-        Text("What is your weight?", fontSize = 29.sp, color = Color.White)
+
+        Text(
+            "What is your weight?",
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
         Spacer(modifier = Modifier.height(20.dp))
-        Text("${weight.toInt()} kg", fontSize = 32.sp, color = Color.White)
-        Spacer(modifier = Modifier.height(16.dp))
-        CircularDial(weight = weight)
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .padding(vertical = 10.dp, horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = "${weight.toInt()}", textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.displayLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(end = 10.dp)
+            )
+            Text(
+                text = "Kg",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+        }
+
+        Column (
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .padding(horizontal = 34.dp)
+                .weight(1f)
+        ) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                drawCircularDial()
+                drawPointer(weight)
+            }
+
+        }
         Slider(
             value = weight,
             onValueChange = { weight = it },
@@ -63,25 +88,13 @@ fun FitnessApp() {
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = { /* TODO: Handle button click */ },
 
-            ) {
-            Text("Let's go", color = Color.Black, fontSize = 18.sp)
-        }
-    }
-}
-
-@Composable
-fun CircularDial(weight: Float) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.size(200.dp)
-    ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            drawCircularDial()
-            drawPointer(weight)
-        }
+        DefaultButton(
+            text = "Let's go",
+            onClick = {
+                onWeight()
+            }
+        )
     }
 }
 
@@ -121,4 +134,12 @@ fun DrawScope.drawPointer(weight: Float) {
         end = Offset(x, y),
         strokeWidth = 8f
     )
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    FitnessAppTheme {
+        WeightScreen()
+    }
 }
