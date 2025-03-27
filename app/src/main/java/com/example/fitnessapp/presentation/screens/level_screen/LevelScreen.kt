@@ -2,6 +2,7 @@ package com.example.fitnessapp.presentation.screens.level_screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,16 +38,10 @@ fun PhysicalActivityLevel(onPersonLevel: (String) -> Unit) {
     }
 
     LevelContent(onPersonLevel, levelList)
-
-
 }
 
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@Preview
 @Composable
 fun Prev() {
     FitnessAppTheme {

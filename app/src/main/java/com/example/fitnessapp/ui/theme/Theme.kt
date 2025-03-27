@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
     // for buttons
-    primary = GreenAccent,
+    primary = Color(0xFF29E33C),
     onPrimary = Color(0xFFFFFFFF),
     // for screens background
     background = Color.Black,

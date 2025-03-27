@@ -3,6 +3,7 @@ package com.example.fitnessapp.presentation.screens.level_screen.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,7 +48,8 @@ fun LevelContent(
     val isLevelSelected = remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier,
+        modifier = Modifier
+            .background(colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(

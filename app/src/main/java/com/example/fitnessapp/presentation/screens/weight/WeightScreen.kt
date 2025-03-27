@@ -90,7 +90,6 @@ fun WeightScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         DefaultButton(
-            text = "Let's go",
             onClick = {
                 onWeight()
             }

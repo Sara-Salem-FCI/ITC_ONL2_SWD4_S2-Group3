@@ -13,24 +13,31 @@ import com.example.fitnessapp.presentation.screens.height_select.NumberPickerDem
 import com.example.fitnessapp.presentation.screens.level_screen.PhysicalActivityLevel
 import com.example.fitnessapp.presentation.screens.auth.login_screen.LoginScreen
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScreen
+import com.example.fitnessapp.presentation.screens.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.weight.WeightScreen
 import com.google.firebase.auth.FirebaseAuth
+
+/**
+ * the Navigation Graph
+ * SignUp -> Gender -> Height -> Level -> Weight -> SetGoal -> DashBoard
+ * Login -> DashBoard
+ */
 
 @Composable
 fun MyAppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val currentUser = FirebaseAuth.getInstance().currentUser
 
-    LaunchedEffect(currentUser) {
-        if (currentUser != null) {
-            navController.navigate(Screens.DashBoardScreen.route) {
-                popUpTo(Screens.SplashScreen.route) { inclusive = true }
-            }
-        } else {
-            navController.navigate(Screens.LogInScreen.route)
-        }
-    }
+//    LaunchedEffect(currentUser) {
+//        if (currentUser != null) {
+//            navController.navigate(Screens.DashBoardScreen.route) {
+//                popUpTo(Screens.SplashScreen.route) { inclusive = true }
+//            }
+//        } else {
+//            navController.navigate(Screens.LogInScreen.route)
+//        }
+//    }
 
 
     NavHost(
@@ -40,7 +47,7 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
     ) {
         composable(Screens.SplashScreen.route) {
             SplashScreen {
-                navController.navigate(Screens.SignUpScreen.route) {
+                navController.navigate(Screens.LogInScreen.route) {
                     popUpTo(Screens.SplashScreen.route) { inclusive = true }
                 }
             }
@@ -54,7 +61,9 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                     }
                 },
                 goToSignUp = {
-                    navController.navigate(Screens.SignUpScreen.route)
+                    navController.navigate(Screens.SignUpScreen.route) {
+                        popUpTo(0)
+                    }
                 }
             )
         }
@@ -63,12 +72,12 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
             SignUpScreen(
                 onSignUp = { username, email, password ->
                     navController.navigate(Screens.GenderScreen.route) {
-                        popUpTo(Screens.SignUpScreen.route) { inclusive = true }
+                        popUpTo(0)
                     }
                 },
                 goToLogin = {
                     navController.navigate(Screens.LogInScreen.route) {
-                        popUpTo(Screens.SignUpScreen.route)
+                        popUpTo(0)
                     }
                 }
             )
@@ -97,6 +106,14 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
         composable(Screens.WeightScreen.route) {
             WeightScreen(
                 onWeight = {
+                    navController.navigate(Screens.SetGoalsScreen.route)
+                }
+            )
+        }
+
+        composable(Screens.SetGoalsScreen.route) {
+            SetGoalsScreen(
+                onSetGoals = {
                     navController.navigate(Screens.DashBoardScreen.route) {
                         popUpTo(0) {
                             inclusive = true

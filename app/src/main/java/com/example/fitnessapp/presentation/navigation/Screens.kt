@@ -19,4 +19,6 @@ sealed class Screens(val route: String) {
     data object DashBoardScreen: Screens("dashBoard")
 
     data object WeightScreen: Screens("weight")
+
+    data object SetGoalsScreen: Screens("set_goals")
 }

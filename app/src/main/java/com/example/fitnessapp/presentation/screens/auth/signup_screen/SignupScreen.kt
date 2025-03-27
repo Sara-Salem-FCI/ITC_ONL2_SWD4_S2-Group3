@@ -1,42 +1,59 @@
 package com.example.fitnessapp.presentation.screens.auth.signup_screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.components.CustomOutlinedTextField
+import com.example.fitnessapp.presentation.screens.auth.signup_screen.viewModel.SignUpState
+import com.example.fitnessapp.presentation.screens.auth.signup_screen.viewModel.SignUpViewModel
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import com.google.firebase.auth.FirebaseAuth
 
-val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
 @Composable
 fun SignUpScreen(
     onSignUp: (String, String, String) -> Unit,
     goToLogin: () -> Unit = {}
 ) {
-    var username by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val signUpViewModel: SignUpViewModel = viewModel()
+    val state by signUpViewModel.state.collectAsStateWithLifecycle()
 
-    // Error states
-    var usernameError by remember { mutableStateOf("") }
-    var emailError by remember { mutableStateOf("") }
-    var passwordError by remember { mutableStateOf("") }
+    val errorMessages by signUpViewModel.invalidElements.collectAsStateWithLifecycle()
+
+    val userName by signUpViewModel.userName.collectAsStateWithLifecycle()
+    val email by signUpViewModel.email.collectAsStateWithLifecycle()
+    val password by signUpViewModel.password.collectAsStateWithLifecycle()
+
 
     val context = LocalContext.current
 
-    Column {
+    LaunchedEffect(state) {
+        when (state) {
+            SignUpState.Authenticated -> {
+                onSignUp(userName, email, password)
+            }
 
+            is SignUpState.Error -> {
+                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+            }
+
+            else -> {}
+        }
+    }
+
+    Column {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -55,13 +72,12 @@ fun SignUpScreen(
 
             // Username Field
             CustomOutlinedTextField(
-                value = username,
+                value = userName,
                 onValueChange = {
-                    username = it
-                    if (it.isNotBlank()) usernameError = ""
+                    signUpViewModel.onUserNameChange(it)
                 },
                 label = "Username",
-                errorMessage = usernameError
+                errorMessage = errorMessages["userName"] ?: ""
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -70,11 +86,10 @@ fun SignUpScreen(
             CustomOutlinedTextField(
                 value = email,
                 onValueChange = {
-                    email = it
-                    if (it.contains("@") && it.contains(".")) emailError = ""
+                    signUpViewModel.onEmailChange(it)
                 },
                 label = "Email",
-                errorMessage = emailError
+                errorMessage = errorMessages["email"] ?: ""
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -83,12 +98,11 @@ fun SignUpScreen(
             CustomOutlinedTextField(
                 value = password,
                 onValueChange = {
-                    password = it
-                    if (it.length >= 6) passwordError = ""
+                    signUpViewModel.onPasswordChange(it)
                 },
                 label = "Password",
                 isPassword = true,
-                errorMessage = passwordError
+                errorMessage = errorMessages["password"] ?: ""
             )
 
             Spacer(modifier = Modifier.height(25.dp))
@@ -102,17 +116,7 @@ fun SignUpScreen(
                     color = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     onClick = {
                         // Validation
-                        usernameError = if (username.isBlank()) "Username cannot be empty" else ""
-                        emailError =
-                            if (!email.contains("@") || !email.contains(".")) "Invalid email format" else ""
-                        passwordError =
-                            if (password.length < 6) "Password must be at least 6 characters" else ""
-
-                        // If no errors, proceed with signup
-                        if (usernameError.isEmpty() && emailError.isEmpty() && passwordError.isEmpty()) {
-                            createUser(email, password, context)
-                            onSignUp(username, email, password)
-                        }
+                        signUpViewModel.createUser()
                     }
                 )
             }
@@ -142,20 +146,6 @@ fun SignUpScreen(
             }
         }
     }
-}
-
-fun createUser(email: String, password: String, context: android.content.Context) {
-    auth.createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d("TAG", "createUserWithEmail:success")
-                val user = auth.currentUser
-
-            } else {
-                Log.w("TAG", "createUserWithEmail:failure", task.exception)
-                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
-            }
-        }
 }
 
 @Preview

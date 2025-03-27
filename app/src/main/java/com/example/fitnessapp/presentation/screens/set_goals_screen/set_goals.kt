@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -31,38 +32,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
+import com.example.fitnessapp.presentation.components.DefaultButton
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Main() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(
-            modifier = Modifier.fillMaxWidth(),
-            title = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+fun SetGoalsScreen(
+    onSetGoals: () -> Unit = {}
+) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .background(colorScheme.background),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
 
-                    Image(
-                        painter = painterResource(id = R.drawable.app_logo),
-                        contentDescription = null,
-                        modifier = Modifier.size(35.dp)
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = stringResource(id = R.string.app_name),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-            },
-
-            colors = TopAppBarDefaults.topAppBarColors(
-                MaterialTheme.colorScheme.background
-            )
-        )
         val items = listOf(
             R.drawable.loseweight,
             R.drawable.weightscale,
@@ -71,19 +59,22 @@ fun Main() {
         val goals = listOf("Lose Weight", "Gain Weight", "Maintain Weight")
         val selectedIndex = remember { mutableStateOf(-1) }
 
-        Column(Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(bottom = 50.dp),
+
+        Text(
+            text = "Set Your Goals",
+            style = MaterialTheme.typography.headlineMedium,
+            color = colorScheme.onBackground,
+            modifier = Modifier.padding(bottom = 10.dp)
+        )
+        Spacer(Modifier.height(10.dp))
+
+        Column(
+            Modifier
+                .fillMaxSize()
+                .weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center) {
-            Text(modifier = Modifier
-                .padding(bottom = 30.dp),
-                text = "Set Your Goals",
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Spacer(Modifier.height(10.dp))
+            verticalArrangement = Arrangement.Center
+        ) {
 
             items.forEachIndexed { index, image ->
                 Column(
@@ -96,14 +87,14 @@ fun Main() {
                             .clip(RoundedCornerShape(16.dp))
                             .border(
                                 width = 2.dp,
-                                color = if (selectedIndex.value == index) MaterialTheme.colorScheme.primary else Color.Gray ,
+                                color = if (selectedIndex.value == index) colorScheme.primary else Color.Gray,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .clickable {
                                 selectedIndex.value = index
                             }
 
-                            .background(color = MaterialTheme.colorScheme.surface)
+                            .background(color = colorScheme.surface)
                     ) {
                         Image(
                             painter = painterResource(id = image),
@@ -114,14 +105,25 @@ fun Main() {
                             contentScale = ContentScale.Crop
                         )
                     }
-                    Text(modifier = Modifier.padding(top = 5.dp),
+                    Text(
                         text = goals[index],
-                        fontSize = 12.sp,
-                        color =MaterialTheme.colorScheme.onSurface
+                        modifier = Modifier.padding(top = 5.dp),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = colorScheme.onBackground
                     )
                 }
             }
         }
+        
+        DefaultButton(onClick = onSetGoals)
     }
 
+}
+
+@Preview
+@Composable
+private fun Prev() {
+    FitnessAppTheme {
+        SetGoalsScreen()
+    }
 }

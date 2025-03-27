@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
-@Preview
 @Composable
 fun DefaultButton(
     onClick: () -> Unit = {},
@@ -30,10 +30,11 @@ fun DefaultButton(
     modifier: Modifier = Modifier.padding(bottom = 32.dp),
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            modifier = modifier
+            modifier = Modifier
                 .width(250.dp)
                 .height(60.dp),
             border = BorderStroke(2.dp, colorScheme.primary),
@@ -55,5 +56,13 @@ fun DefaultButton(
             color = Color.Red,
             fontSize = 12.sp,
         )
+    }
+}
+
+@Preview
+@Composable
+private fun Hello() {
+    FitnessAppTheme {
+        DefaultButton()
     }
 }
