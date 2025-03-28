@@ -33,10 +33,17 @@ fun DefaultButton(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Text(
+            text = message,
+            color = Color.Red,
+            fontSize = 12.sp,
+        )
         Button(
             modifier = Modifier
                 .width(250.dp)
-                .height(60.dp),
+                .height(60.dp)
+                .padding(top = 8.dp),
             border = BorderStroke(2.dp, colorScheme.primary),
             colors = color,
             onClick = {
@@ -51,11 +58,7 @@ fun DefaultButton(
             )
         }
 
-        Text(
-            text = message,
-            color = Color.Red,
-            fontSize = 12.sp,
-        )
+
     }
 }
 

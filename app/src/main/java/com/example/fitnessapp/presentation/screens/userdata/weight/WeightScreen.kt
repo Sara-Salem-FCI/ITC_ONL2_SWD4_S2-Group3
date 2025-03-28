@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.userdata.weight
 
-
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -22,15 +21,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import java.lang.Math.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
-
 
 @Composable
 fun WeightScreen(
     onWeight: () -> Unit = {}
 ) {
-    var weight by remember { mutableStateOf(56f) } // Initial weight
+    var weight by remember { mutableFloatStateOf(70f) } // Default weight
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -38,7 +37,6 @@ fun WeightScreen(
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
     ) {
-
         Text(
             "What is your weight?",
             style = MaterialTheme.typography.headlineMedium,
@@ -53,7 +51,8 @@ fun WeightScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "${weight.toInt()}", textAlign = TextAlign.Center,
+                text = "${weight.toInt()}",
+                textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(end = 10.dp)
@@ -66,23 +65,23 @@ fun WeightScreen(
             )
         }
 
-        Column (
+        Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .padding(horizontal = 34.dp)
                 .weight(1f)
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
-                drawCircularDial()
-                drawPointer(weight)
+                drawCircularDial(20, 180) // Before: drawCircularDial(30, 150)
+                drawPointer(weight, 20, 180) // Before: drawPointer(weight, 30, 150)
             }
-
         }
+
         Slider(
             value = weight,
             onValueChange = { weight = it },
-            valueRange = 55f..58f,
-            steps = 2,
+            valueRange = 20f..180f, // Before: 30f..150f
+            steps = 160, // Before: steps = 120, adjusted for smoother control
             colors = SliderDefaults.colors(
                 thumbColor = Color.Green,
                 activeTrackColor = Color.Green
@@ -96,25 +95,30 @@ fun WeightScreen(
             }
         )
     }
+
 }
 
-fun DrawScope.drawCircularDial() {
+fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
     drawCircle(
         color = Color.Green,
         style = Stroke(width = 8f)
     )
+
     val radius = size.minDimension / 2
-    val steps = listOf(55, 56, 57, 58)
-    steps.forEachIndexed { index, step ->
-        val angle = (index - 1) * 90f // 90-degree intervals
-        val x = (radius * cos(Math.toRadians(angle.toDouble()))).toFloat() + center.x
-        val y = (radius * sin(Math.toRadians(angle.toDouble()))).toFloat() + center.y
+    val totalSteps = maxWeight - minWeight
+    val stepAngle = 360f / totalSteps // Before: 90f / totalSteps
+
+    for (i in 0..totalSteps step 10) { // Before: step 20
+        val weightValue = minWeight + i
+        val angle = i * stepAngle - 90f
+        val x = (radius * cos(toRadians(angle.toDouble()))).toFloat() + center.x
+        val y = (radius * sin(toRadians(angle.toDouble()))).toFloat() + center.y
+
         drawContext.canvas.nativeCanvas.drawText(
-            step.toString(),
+            weightValue.toString(),
             x,
             y,
             Paint().apply {
-
                 textSize = 40f
                 textAlign = Paint.Align.CENTER
             }
@@ -122,23 +126,29 @@ fun DrawScope.drawCircularDial() {
     }
 }
 
-fun DrawScope.drawPointer(weight: Float) {
-    val angle = (weight - 55) * 90f - 90f // Calculate angle based on weight
+fun DrawScope.drawPointer(weight: Float, minWeight: Int, maxWeight: Int) {
+    val totalSteps = maxWeight - minWeight
+    val stepAngle = 360f / totalSteps // Before: 90f / totalSteps
+    val angle = (weight - minWeight) * stepAngle - 90f
+
     val radius = size.minDimension / 2
     val pointerLength = radius * 0.6f
-    val x = (pointerLength * cos(Math.toRadians(angle.toDouble()))).toFloat() + center.x
-    val y = (pointerLength * sin(Math.toRadians(angle.toDouble()))).toFloat() + center.y
+    val x = (pointerLength * cos(toRadians(angle.toDouble()))).toFloat() + center.x
+    val y = (pointerLength * sin(toRadians(angle.toDouble()))).toFloat() + center.y
+
     drawLine(
         color = Color.Green,
         start = center,
         end = Offset(x, y),
         strokeWidth = 8f
     )
+
 }
+
 
 @Preview
 @Composable
-private fun Preview() {
+private fun Prev() {
     FitnessAppTheme {
         WeightScreen()
     }
