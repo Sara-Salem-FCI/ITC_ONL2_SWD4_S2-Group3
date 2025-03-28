@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.auth.login_screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,26 +11,49 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnessapp.presentation.components.DefaultButton
-import com.example.fitnessapp.presentation.screens.auth.signup_screen.components.CustomOutlinedTextField
+import com.example.fitnessapp.presentation.screens.auth.login_screen.viewModel.LoginState
+import com.example.fitnessapp.presentation.screens.auth.login_screen.viewModel.LoginViewModel
+import com.example.fitnessapp.presentation.screens.auth.components.CustomOutlinedTextField
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
-import com.google.firebase.auth.FirebaseAuth
 
-val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
 @Composable
 fun LoginScreen(
     onLogin: () -> Unit = {},
     goToSignUp: () -> Unit = {}
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
-    // Error states
-    var emailError by remember { mutableStateOf("") }
-    var passwordError by remember { mutableStateOf("") }
+    val loginViewModel: LoginViewModel = viewModel()
+
+    val state by loginViewModel.state.collectAsStateWithLifecycle()
+
+    val invalidInput by loginViewModel.invalidElements.collectAsStateWithLifecycle()
+
+    val email by loginViewModel.email.collectAsStateWithLifecycle()
+    val password by loginViewModel.password.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
+
+    LaunchedEffect(state) {
+        when (state) {
+            is LoginState.Authenticated -> {
+                onLogin()
+            }
+
+            is LoginState.Error -> {
+                Toast.makeText(
+                    context,
+                    "Authentication failed. ${(state as LoginState.Error).errorMessage}}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else -> Unit
+        }
+    }
 
     Column {
         // Login Form at the center
@@ -58,11 +80,10 @@ fun LoginScreen(
             CustomOutlinedTextField(
                 value = email,
                 onValueChange = {
-                    email = it
-                    if (it.contains("@") && it.contains(".")) emailError = ""
+                    loginViewModel.onEmailChange(it)
                 },
                 label = "Email",
-                errorMessage = emailError
+                errorMessage = invalidInput["email"]
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -73,12 +94,11 @@ fun LoginScreen(
             CustomOutlinedTextField(
                 value = password,
                 onValueChange = {
-                    password = it
-                    if (it.isNotBlank()) passwordError = ""
+                    loginViewModel.onPasswordChange(it)
                 },
                 label = "Password",
                 isPassword = true,
-                errorMessage = passwordError
+                errorMessage = invalidInput["password"]
             )
 
             Spacer(modifier = Modifier.height(25.dp))
@@ -92,16 +112,7 @@ fun LoginScreen(
                     text = "Login",
                     color = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     onClick = {
-                        // Validation
-                        emailError =
-                            if (!email.contains("@") || !email.contains(".")) "Invalid email format" else ""
-                        passwordError =
-                            if (password.length < 6) "Password must be at least 6 characters" else ""
-
-                        // If no errors, proceed with login
-                        if (emailError.isEmpty() && passwordError.isEmpty()) {
-                            signInUser(email, password, context, onLogin)
-                        }
+                        loginViewModel.logInUser()
                     }
                 )
             }
@@ -133,19 +144,6 @@ fun LoginScreen(
     }
 }
 
-fun signInUser(email: String, password: String, context: android.content.Context, onLogin: () -> Unit) {
-    auth.signInWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d("TAG", "signInWithEmail:success")
-                onLogin()
-                Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
-            } else {
-                Log.w("TAG", "signInWithEmail:failure", task.exception)
-                Toast.makeText(context, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
-}
 
 @Preview
 @Composable

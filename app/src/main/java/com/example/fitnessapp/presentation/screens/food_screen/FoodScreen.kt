@@ -11,11 +11,7 @@ import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
 fun FoodScreen() {
-    Scaffold(
-        topBar = { TopBar(title = "Food") }
-    ) {
-        FoodBody(Modifier.padding(it))
-    }
+    FoodBody()
 }
 
 

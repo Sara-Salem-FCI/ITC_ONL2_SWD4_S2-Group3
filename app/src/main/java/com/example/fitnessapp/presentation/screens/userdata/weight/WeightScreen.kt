@@ -1,6 +1,7 @@
-package com.example.fitnessapp.presentation.screens.weight
+package com.example.fitnessapp.presentation.screens.userdata.weight
 
 
+import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -112,10 +113,10 @@ fun DrawScope.drawCircularDial() {
             step.toString(),
             x,
             y,
-            android.graphics.Paint().apply {
+            Paint().apply {
 
                 textSize = 40f
-                textAlign = android.graphics.Paint.Align.CENTER
+                textAlign = Paint.Align.CENTER
             }
         )
     }

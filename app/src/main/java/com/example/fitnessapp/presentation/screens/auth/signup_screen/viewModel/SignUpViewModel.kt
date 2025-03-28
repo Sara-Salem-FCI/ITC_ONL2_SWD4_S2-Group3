@@ -10,7 +10,6 @@ class SignUpViewModel : ViewModel() {
 
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-
     private val _state = MutableStateFlow<SignUpState>(SignUpState.UnAuthenticated)
     val state = _state.asStateFlow()
 
@@ -28,16 +27,14 @@ class SignUpViewModel : ViewModel() {
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
-
     fun createUser() {
-
         val errors = mutableMapOf<String, String>()
 
-        if (_userName.value.isBlank()) {
+        if (!_userName.value.matches("^[a-zA-Z0-9._]{3,20}$".toRegex())) {
             errors["userName"] = "Username cannot be empty"
         }
 
-        if (!_email.value.contains("@") || !_email.value.contains(".")) {
+        if (!_email.value.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,3}\$".toRegex())) {
             errors["email"] = "Invalid email format"
         }
 
@@ -46,11 +43,12 @@ class SignUpViewModel : ViewModel() {
         }
 
         if (errors.isEmpty()) {
+            _invalidElements.value = errors
+            _state.value = SignUpState.InvalidInput(errors)
             uploadUserInfo(_email.value, _password.value, _userName.value)
         } else {
             _invalidElements.value = errors
             _state.value = SignUpState.InvalidInput(errors)
-            _state.value
         }
     }
 

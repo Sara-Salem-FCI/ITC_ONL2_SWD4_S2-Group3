@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,11 +14,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnessapp.presentation.components.DefaultButton
-import com.example.fitnessapp.presentation.screens.auth.signup_screen.components.CustomOutlinedTextField
+import com.example.fitnessapp.presentation.screens.auth.components.CustomOutlinedTextField
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.viewModel.SignUpState
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.viewModel.SignUpViewModel
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
-import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
@@ -49,7 +47,7 @@ fun SignUpScreen(
                 Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
             }
 
-            else -> {}
+            else -> Unit
         }
     }
 

@@ -1,7 +1,5 @@
 package com.example.fitnessapp.presentation.screens.dashboared
 
-
-
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -49,40 +46,7 @@ fun ProfileScreen(navController: NavController) {
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 15.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.baseline_person_24),
-                contentDescription = "Header Image",
-                modifier = Modifier
-                    .height(35.dp)
-                    .width(35.dp)
-                    .clip(CircleShape)
-                    .background(Color(android.graphics.Color.parseColor("#29E33C")))
-            )
 
-            Text(
-                text = "myfitnesspal",
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-
-                )
-
-            Image(
-                painter = painterResource(id = R.drawable.baseline_notifications_24),
-                contentDescription = "Header Image",
-                colorFilter = ColorFilter.tint(Color(android.graphics.Color.parseColor("#29E33C"))),
-                modifier = Modifier
-                    .height(30.dp)
-                    .width(30.dp)
-
-            )
-        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -211,7 +175,7 @@ fun ProfileScreen(navController: NavController) {
             Image(
                 painter = painterResource(id = R.drawable.baseline_call_received_24),
                 contentDescription = "Header Image",
-                colorFilter = ColorFilter.tint(Color(android.graphics.Color.parseColor("#29E33C"))),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .height(40.dp)
                     .width(40.dp)
@@ -219,7 +183,7 @@ fun ProfileScreen(navController: NavController) {
             Image(
                 painter = painterResource(id = R.drawable.baseline_call_received_24),
                 contentDescription = "Header Image",
-                colorFilter = ColorFilter.tint(Color(android.graphics.Color.parseColor("#29E33C"))),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .height(40.dp)
                     .width(40.dp)
@@ -227,7 +191,7 @@ fun ProfileScreen(navController: NavController) {
             Image(
                 painter = painterResource(id = R.drawable.baseline_call_received_24),
                 contentDescription = "Header Image",
-                colorFilter = ColorFilter.tint(Color(android.graphics.Color.parseColor("#29E33C"))),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .height(40.dp)
                     .width(40.dp)

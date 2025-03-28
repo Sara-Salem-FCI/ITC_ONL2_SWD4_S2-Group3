@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.level_screen.components
+package com.example.fitnessapp.presentation.screens.userdata.level_screen.components
 
 
 import androidx.compose.foundation.BorderStroke
@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.DefaultButton
-import com.example.fitnessapp.presentation.screens.level_screen.models.LevelList
+import com.example.fitnessapp.presentation.screens.userdata.level_screen.models.LevelList
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 

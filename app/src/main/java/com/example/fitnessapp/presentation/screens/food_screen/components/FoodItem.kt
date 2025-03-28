@@ -72,8 +72,10 @@ fun FoodItem(food: FoodModel,modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight()
+                        .padding(4.dp)
                 ) {
                     Text(
+                        modifier = Modifier.padding(start = 2.dp),
                         text = food.recipeName,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,

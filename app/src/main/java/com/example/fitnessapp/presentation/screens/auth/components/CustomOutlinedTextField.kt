@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.auth.signup_screen.components
+package com.example.fitnessapp.presentation.screens.auth.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
