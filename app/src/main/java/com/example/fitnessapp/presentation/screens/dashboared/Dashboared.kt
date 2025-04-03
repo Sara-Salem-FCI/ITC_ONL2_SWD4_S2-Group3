@@ -63,13 +63,11 @@ fun ProfileScreen(navController: NavController) {
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
                     .padding(horizontal = 5.dp, vertical = 3.dp)
-                    .background(Color.White)
             ) {
                 Text(
                     text = "Edit",
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineMedium,
-                    fontSize = 20.sp
                 )
             }
         }
