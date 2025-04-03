@@ -19,7 +19,7 @@ class LoginViewModel : ViewModel() {
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
-    private val _invalidElements = MutableStateFlow<Map<String,String>>(emptyMap())
+    private val _invalidElements = MutableStateFlow<Map<String, String>>(emptyMap())
     val invalidElements = _invalidElements.asStateFlow()
 
     fun logInUser() {

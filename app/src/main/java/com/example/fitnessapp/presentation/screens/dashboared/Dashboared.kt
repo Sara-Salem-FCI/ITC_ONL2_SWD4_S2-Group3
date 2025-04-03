@@ -1,9 +1,7 @@
 package com.example.fitnessapp.presentation.screens.dashboared
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,7 +62,6 @@ fun ProfileScreen(navController: NavController) {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
-                    .border(BorderStroke(1.dp, Color.LightGray))
                     .padding(horizontal = 5.dp, vertical = 3.dp)
                     .background(Color.White)
             ) {
@@ -76,137 +73,74 @@ fun ProfileScreen(navController: NavController) {
                 )
             }
         }
+
         Column(
             modifier = Modifier
                 .padding(all = 15.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(21.dp))
                 .fillMaxWidth()
-                .border(BorderStroke(2.dp, Color.LightGray))
                 .padding(16.dp)
         ) {
             Text(
                 text = "Calories",
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
             )
             Text(
                 text = "Remaining = Goal - Food + Exercise",
-                color = Color.Black,
-                style = MaterialTheme.typography.headlineMedium,
-                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelLarge,
             )
+
             Row(
+                modifier = Modifier.padding(top = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 CircularProgressIndicator(
-                    //
                     progress = 2000f / 3000f,
                     //dynamic
                     remainingText = "300",
                     modifier = Modifier.size(120.dp)
                 )
                 Spacer(modifier = Modifier.width(50.dp))
-                Column(verticalArrangement = Arrangement.SpaceEvenly) {
-                    Row {
-                        Image(
-                            painter = painterResource(id = R.drawable.baseline_flag_24),
-                            contentDescription = "Header Image",
-                            modifier = Modifier
-                                .height(30.dp)
-                                .width(30.dp)
-                        )
-                        Spacer(modifier = Modifier.width(5.dp))
 
-                        Text(
-                            text = "Base Goal",
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontSize = 17.sp,
-                            color = Color.Black
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Row {
-                        Image(
-                            painter = painterResource(id = R.drawable.dinner_icon),
-                            contentDescription = "Header Image",
-                            colorFilter = ColorFilter.tint(Color(android.graphics.Color.parseColor("#29E33C"))),
-                            modifier = Modifier
-                                .height(30.dp)
-                                .width(30.dp)
+                Column {
 
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "Food (377)",
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontSize = 17.sp,
-                            color = Color.Black
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row {
+                    BaseFoodExercise(R.drawable.baseline_flag_24, "Header Image", "Base Goal")
 
-                        Image(
-                            painter = painterResource(id = R.drawable.hot_icon),
-                            contentDescription = "Header Image",
-                            modifier = Modifier
-                                .height(30.dp)
-                                .width(30.dp)
-                        )
-                        Text(
-                            text = "Exercise (20)",
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontSize = 17.sp,
-                            color = Color.Black
-                        )
-                    }
+                    BaseFoodExercise(
+                        R.drawable.dinner_icon,
+                        "Header Image",
+                        "Food (377)",
+                        ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                    )
+
+                    BaseFoodExercise(R.drawable.hot_icon, "Header Image", "Exercise (20)")
                 }
             }
         }
+
+        // three arrows
         Row(
-            horizontalArrangement = Arrangement.Center, // Space evenly between items
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(start = 130.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.baseline_call_received_24),
-                contentDescription = "Header Image",
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(40.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.baseline_call_received_24),
-                contentDescription = "Header Image",
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(40.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.baseline_call_received_24),
-                contentDescription = "Header Image",
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(40.dp)
-            )
+            Arrow()
+            Arrow()
+            Arrow()
         }
+
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-
                 .padding(all = 15.dp)
-                .clip(RoundedCornerShape(8.dp))
                 .fillMaxWidth()
-                .background(Color.White)
-                .border(BorderStroke(2.dp, Color.LightGray))
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(21.dp))
                 .padding(16.dp)
         ) {
             Image(
@@ -221,7 +155,7 @@ fun ProfileScreen(navController: NavController) {
                 text = "Add Hapit",
                 style = MaterialTheme.typography.headlineMedium,
                 fontSize = 30.sp,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
 
                 )
@@ -230,6 +164,49 @@ fun ProfileScreen(navController: NavController) {
 
         DiscoverSection(navController)
     }
+}
+@Composable
+fun BaseFoodExercise(
+    painter: Int,
+    contentDescription: String,
+    text: String,
+    colorFilter: ColorFilter? = null
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(id = painter),
+            contentDescription = contentDescription,
+            colorFilter = colorFilter,
+            modifier = Modifier
+                .height(30.dp)
+                .width(30.dp)
+        )
+
+        Spacer(modifier = Modifier.width(5.dp))
+
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+
+@Composable
+fun Arrow() {
+    Image(
+        painter = painterResource(id = R.drawable.baseline_call_received_24),
+        contentDescription = "Header Image",
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+        modifier = Modifier
+            .height(40.dp)
+            .width(40.dp)
+    )
 }
 
 @Composable

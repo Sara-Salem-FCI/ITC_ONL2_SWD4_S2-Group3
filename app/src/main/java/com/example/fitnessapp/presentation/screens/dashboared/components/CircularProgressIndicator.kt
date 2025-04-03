@@ -3,6 +3,7 @@ package com.example.fitnessapp.presentation.screens.dashboared.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,7 +47,7 @@ fun CircularProgressIndicator(
 
         Text(
             text = remainingText,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
             modifier = Modifier.align(Alignment.Center)
